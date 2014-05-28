@@ -14,7 +14,7 @@ public class RightClickTowerRule extends AbstractTowerRule {
 
 	@Override
 	public boolean mustApply(AbstractTower component, DeltaState deltaState) {
-		if (deltaState.isMouseButtonReleased(MouseButton.RIGHT) && mouseOverComponent(component, deltaState)) {
+		if (deltaState.isMouseButtonReleased(MouseButton.LEFT) && mouseOverComponent(component, deltaState)) {
 			return true;
 		}
 		return false;

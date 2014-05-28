@@ -1,14 +1,11 @@
 package ar.edu.unq.tpi.games.towerdefence.components.units;
 
-import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.ImageIcon;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
-import javax.swing.border.TitledBorder;
 
 public class TowerPopUpMenu extends JPopupMenu implements ActionListener {
 	
@@ -36,7 +33,7 @@ public class TowerPopUpMenu extends JPopupMenu implements ActionListener {
 		levelUpTower = new JMenuItem();
         levelUpTower.addActionListener(this);
         if( tower.getCurrentLevel() < tower.getMaxLevel()) {
-        	levelUpTower.setText("Mejorar torre a Nivel " + (tower.getCurrentLevel() + 1) + " (Costo: " + this.tower.getLevelUpCost() + ")");
+        	levelUpTower.setText("Mejorar torre a Nivel " + (tower.getCurrentLevel() + 1) + " (Costo: -" + this.tower.getLevelUpCost() + ")");
         } else {
         	levelUpTower.setText("Limite de mejoras alcanzado");
         	levelUpTower.setEnabled(false);
