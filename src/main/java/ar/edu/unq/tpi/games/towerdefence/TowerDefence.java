@@ -3,7 +3,6 @@ package ar.edu.unq.tpi.games.towerdefence;
 import java.awt.Cursor;
 import java.awt.Dimension;
 
-import ar.edu.unq.tpi.games.towerdefence.components.units.TowerSpriteManager;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.TowerDefenceLevel1;
 import ar.edu.unq.tpi.games.towerdefence.util.BulletPoolSingleton;
 
@@ -16,10 +15,10 @@ public class TowerDefence extends Game {
 	private static int SIZE_WIDTH = ResourceUtil.getResourceInt("TowerDefence.game.width");
 	private static int SIZE_HEIGHT = ResourceUtil.getResourceInt("TowerDefence.game.height");
 	
-	private static DesktopGameLauncher gameLauncher;
+	
 	
 	public static void main(String[] args) throws Exception {
-		setGameLauncher(new DesktopGameLauncher(new TowerDefence()));
+		TowerDefence.setGameLauncher(new DesktopGameLauncher(new TowerDefence()));
 		getGameLauncher().launch();
 	}
 	
@@ -55,16 +54,9 @@ public class TowerDefence extends Game {
 			BulletPoolSingleton.getInstance().obtainBullet();
 		}
 	}
-
+	
 	public void setCursor(Cursor cursor) {
 		TowerDefence.getGameLauncher().setCursor(cursor);
-	}
-
-	public static DesktopGameLauncher getGameLauncher() {
-		return gameLauncher;
-	}
-
-	public static void setGameLauncher(DesktopGameLauncher gameLauncher) {
-		TowerDefence.gameLauncher = gameLauncher;
+		TowerDefence.getGameLauncher().pack();
 	}
 }

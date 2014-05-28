@@ -8,7 +8,7 @@ import ar.edu.unq.tpi.games.towerdefence.components.Bullet;
 import ar.edu.unq.tpi.games.towerdefence.components.RangeShadow;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
 import ar.edu.unq.tpi.games.towerdefence.components.rules.AbstractTowerRule;
-import ar.edu.unq.tpi.games.towerdefence.components.rules.LeftClickTowerRule;
+import ar.edu.unq.tpi.games.towerdefence.components.rules.RightClickTowerRule;
 import ar.edu.unq.tpi.games.towerdefence.components.rules.ShootingTowerRule;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 import ar.edu.unq.tpi.games.towerdefence.util.BulletPoolSingleton;
@@ -48,7 +48,6 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	}
 	
 	private void createRangeShadow() {
-		System.out.println("Creando sombra");
 		double x = this.getCenter().getX();
 		double y = this.getCenter().getY();
 		
@@ -63,7 +62,7 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	}
 	private void initRules() {
 		this.addRule(new ShootingTowerRule());
-		this.addRule(new LeftClickTowerRule());
+		this.addRule(new RightClickTowerRule());
 	}
 
 	protected void addRule(AbstractTowerRule rule) {
@@ -95,7 +94,7 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 			bullet.setSpeed(100);
 			this.getScene().addComponent(bullet);
 			
-			this.setShootingDelay(getIntPropertyFromConfig("bullet.delay"));
+			this.setShootingDelay(getIntPropertyFromConfigByLevel("bullet.delay"));
 		}
 	}
 
@@ -133,7 +132,7 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	}
 
 	public double getBulletRange() {
-		return getIntPropertyFromConfig("bullet.range");
+		return getIntPropertyFromConfigByLevel("bullet.range");
 	}
 
 	public AbstractEnemy getTarget() {
@@ -165,11 +164,11 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 		}
 	}
 	
-	protected double getIntPropertyFromConfig(String resource) {
+	protected double getIntPropertyFromConfigByLevel(String resource) {
 		return ResourceUtil.getResourceInt(this.getClass().getSimpleName() + ".level" + this.getCurrentLevel() + "." + resource);
 	}
 	
-	protected String getStringPropertyFromConfig(String resource) {
+	protected String getStringPropertyFromConfigByLevel(String resource) {
 		return ResourceUtil.getResourceString(this.getClass().getSimpleName() + ".level" + this.getCurrentLevel() + "." + resource);
 	}
 
@@ -187,5 +186,13 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	
 	public void hideRangeShadow() {
 		rangeShadow.setVisible(false);
+	}
+
+	public String getName() {
+		return getStringPropertyFromConfig("name");
+	}
+	
+	public String getLevelUpCost() {
+		return getStringPropertyFromConfigByLevel("levelup.cost");
 	}
 }

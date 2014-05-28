@@ -30,6 +30,10 @@ public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 		if ( deltaState.isMouseButtonReleased(MouseButton.LEFT) ) {
 			this.addTower(deltaState.getLastMousePosition());;
 		}
+		
+		if ( deltaState.isMouseButtonBeingHold(MouseButton.LEFT) ) {
+			//this.getGame().setCursor();
+		}
 	}
 
 	private void addTower(Double position) {

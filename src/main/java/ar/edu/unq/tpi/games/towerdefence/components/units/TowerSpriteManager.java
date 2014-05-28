@@ -11,9 +11,7 @@ public class TowerSpriteManager {
 	private Sprite[] sprites = new Sprite[36];
 
 	public TowerSpriteManager() {
-		System.out.println("Cargando sprites de la torre.");
 		this.init();
-		System.out.println("Finalizada la carga de sprites de la torre.");
 	}
 	
 	private void init() {
@@ -73,10 +71,7 @@ public class TowerSpriteManager {
 	}
 	
 	public Appearance getSpriteFromVector(Vector2D vector) {
-//		System.out.println("Angulo:" + vector.angle());
-//		System.out.println((35/360 * (vector.angle() * 180/Math.PI)));
 		int sprite = (int) (35/360 * (vector.angle() * 180/Math.PI));
-//		System.out.println("Sprite" + sprite);
 		return getSprites()[sprite];
 	}
 

@@ -3,6 +3,7 @@ package ar.edu.unq.tpi.games.towerdefence.components.units;
 import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 
+import com.uqbar.vainilla.appearances.Animation;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Rectangle;
 
