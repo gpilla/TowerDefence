@@ -22,20 +22,34 @@ public class MapGraph<T> {
 		this.setHeight(height);
 		for(int i=0; i<rows;i++){
 			List<Node<T>> row = new ArrayList<Node<T>>();
-			for(int j=0; i<columns;j++){
+			for(int j=0; j<columns;j++){
 				row.add(new Node<T>(i + "," + j));
 			}
 			this.getNodes().add(row);
 		}
 	}
 	
+	public void addNode(double x, double y, T element){
+		int col = this.obtainColNumber(x);
+		List<Node<T>> column = this.getNodes().get(col);
+		int row = this.obtainRowNumber(x);
+		column.add(row, new Node<T>());
+	}
 	
-	private double obtainVerticalStep(){
+	public int obtainColNumber(double x){
+		return (int)(x/this.obtainVerticalStep());
+	}
+
+	public int obtainRowNumber(double x){
+		return (int)(x/this.obtainVerticalStep());
+	}
+	
+	public double obtainVerticalStep(){
 		return this.getHeight()/this.getRows();
 	}
 	
-	private double obtainHorizontalStep(){
-		return this.getWidth()/this.getColumns();
+	public int obtainHorizontalStep(){
+		return (int)this.getWidth()/this.getColumns();
 	}
 	
 	
