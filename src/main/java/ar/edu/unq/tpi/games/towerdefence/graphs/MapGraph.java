@@ -15,7 +15,7 @@ public class MapGraph<T> {
 		
 	}
 	
-	public MapGraph(int rows, int columns, double width, double height){
+	public MapGraph(int rows, int columns, double height, double width){
 		this.setRows(rows);
 		this.setColumns(columns);
 		this.setWidth(width);
@@ -32,24 +32,30 @@ public class MapGraph<T> {
 	public void addNode(double x, double y, T element){
 		int col = this.obtainColNumber(x);
 		List<Node<T>> column = this.getNodes().get(col);
-		int row = this.obtainRowNumber(x);
+		int row = this.obtainRowNumber(y);
 		column.add(row, new Node<T>());
 	}
 	
 	public int obtainColNumber(double x){
-		return (int)(x/this.obtainVerticalStep());
+		if(x>=this.getWidth()){
+			return this.getColumns() - 1;
+		}
+		return (int)(x/this.obtainHorizontalStep());
 	}
 
-	public int obtainRowNumber(double x){
-		return (int)(x/this.obtainVerticalStep());
+	public int obtainRowNumber(double y){
+		if(y>=this.getHeight()){
+			return this.getRows()-1;
+		}
+		return (int)(y/this.obtainVerticalStep());
 	}
 	
 	public double obtainVerticalStep(){
 		return this.getHeight()/this.getRows();
 	}
 	
-	public int obtainHorizontalStep(){
-		return (int)this.getWidth()/this.getColumns();
+	public double obtainHorizontalStep(){
+		return this.getWidth()/this.getColumns();
 	}
 	
 	
