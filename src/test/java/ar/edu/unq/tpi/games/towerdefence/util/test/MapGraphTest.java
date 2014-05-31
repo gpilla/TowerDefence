@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 import org.mockito.runners.VerboseMockitoJUnitRunner;
 
 import ar.edu.unq.tpi.games.towerdefence.graphs.MapGraph;
+import ar.edu.unq.tpi.games.towerdefence.graphs.Node;
 
 @RunWith(VerboseMockitoJUnitRunner.class)
 public class MapGraphTest {
@@ -106,5 +107,14 @@ public class MapGraphTest {
 		
 	}
 
+	@Test
+	public void addAndObtainNode(){
+		MapGraph<String> mapGraph = new MapGraph<String>(45,50,500,800);
+		String expectedNodeElement = "NodeElement";
+		mapGraph.addNode(25, 18, expectedNodeElement);
+		Node<String> actualNode = mapGraph.obtainNode(25, 18);
+		String actualNodeElement = actualNode.getElement();
+		assertEquals(expectedNodeElement,actualNodeElement);
+	}
 	
 }

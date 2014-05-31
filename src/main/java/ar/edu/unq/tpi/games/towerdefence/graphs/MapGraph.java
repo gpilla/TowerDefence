@@ -1,10 +1,10 @@
 package ar.edu.unq.tpi.games.towerdefence.graphs;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.lang.reflect.Array;
+
 
 public class MapGraph<T> {
-	private List<List<Node<T>>> nodes = new ArrayList<List<Node<T>>>();
+	private Node<T> matrix[][];
 	private int rows = 0;
 	private int columns = 0;
 	private double width = 0;
@@ -15,25 +15,31 @@ public class MapGraph<T> {
 		
 	}
 	
+	@SuppressWarnings("unchecked")
 	public MapGraph(int rows, int columns, double height, double width){
 		this.setRows(rows);
 		this.setColumns(columns);
 		this.setWidth(width);
 		this.setHeight(height);
-		for(int i=0; i<rows;i++){
-			List<Node<T>> row = new ArrayList<Node<T>>();
-			for(int j=0; j<columns;j++){
-				row.add(new Node<T>(i + "," + j));
-			}
-			this.getNodes().add(row);
-		}
+		this.matrix = (Node<T>[][])Array.newInstance(Node.class, rows,columns);
 	}
 	
 	public void addNode(double x, double y, T element){
 		int col = this.obtainColNumber(x);
-		List<Node<T>> column = this.getNodes().get(col);
 		int row = this.obtainRowNumber(y);
-		column.add(row, new Node<T>());
+		Node<T> node = this.getMatrix()[col][row];
+		if(node==null){
+			node = new Node<T>(element, row + "-" + col);
+		}else{
+			node.setElement(element);
+		}
+		this.getMatrix()[col][row] = node;
+	}
+	
+	public Node<T> obtainNode(double x, double y){
+		int col = this.obtainColNumber(x);
+		int row = this.obtainRowNumber(y);
+		return this.getMatrix()[row][col];
 	}
 	
 	public int obtainColNumber(double x){
@@ -54,10 +60,10 @@ public class MapGraph<T> {
 		return this.getHeight()/this.getRows();
 	}
 	
+	
 	public double obtainHorizontalStep(){
 		return this.getWidth()/this.getColumns();
 	}
-	
 	
 	protected int getColumns() {
 		return columns;
@@ -88,12 +94,12 @@ public class MapGraph<T> {
 		this.height = height;
 	}
 
-	protected List<List<Node<T>>> getNodes() {
-		return nodes;
+	protected Node<T>[][] getMatrix() {
+		return matrix;
 	}
 
-	protected void setNodes(List<List<Node<T>>> nodes) {
-		this.nodes = nodes;
+	protected void setMatrix(Node<T>[][] matrix) {
+		this.matrix = matrix;
 	}
 	
 	
