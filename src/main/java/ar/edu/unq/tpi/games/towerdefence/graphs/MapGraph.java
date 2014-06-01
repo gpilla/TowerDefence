@@ -60,6 +60,18 @@ public class MapGraph<T> {
 		return this.getHeight()/this.getRows();
 	}
 	
+	private double obtainInitialX(double x){
+		double step = this.obtainHorizontalStep();
+		int colNumber = this.obtainColNumber(x);
+		return ((double)colNumber)*step;
+	}
+	
+	private double obtainInitialY(double y){
+		double step = this.obtainVerticalStep();
+		int rowNumber = this.obtainRowNumber(y);
+		return ((double)rowNumber)*step;
+	}
+	
 	
 	public double obtainHorizontalStep(){
 		return this.getWidth()/this.getColumns();
