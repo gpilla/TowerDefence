@@ -4,7 +4,7 @@ import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 
 import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
-import ar.edu.unq.tpi.games.towerdefence.components.units.BasicTower;
+import ar.edu.unq.tpi.games.towerdefence.graphs.MapGraph;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 
 import com.uqbar.vainilla.DeltaState;
@@ -17,8 +17,16 @@ import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	
+	private MapGraph<GameComponent<AbstractTowerDefenceLevel>> mapGraph;
+	
 	public Scenary() {
 		this.setAppearance(this.getDefaultAppearance());
+		this.setMapGraph(
+				new MapGraph<GameComponent<AbstractTowerDefenceLevel>>(
+						ResourceUtil.getResourceInt("TowerDefence.scenary.rows"), 
+						ResourceUtil.getResourceInt("TowerDefence.scenary.columns"), 
+						ResourceUtil.getResourceInt("TowerDefence.scenary.height"), 
+						ResourceUtil.getResourceInt("TowerDefence.scenary.width")));
 	}
 	
 	private Appearance getDefaultAppearance() {
@@ -37,6 +45,14 @@ public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 
 	public void addTower(AbstractTower tower) {
 		this.getScene().addComponent(tower);
+	}
+
+	public MapGraph<GameComponent<AbstractTowerDefenceLevel>> getMapGraph() {
+		return mapGraph;
+	}
+
+	public void setMapGraph(MapGraph<GameComponent<AbstractTowerDefenceLevel>> mapGraph) {
+		this.mapGraph = mapGraph;
 	}
 	
 }

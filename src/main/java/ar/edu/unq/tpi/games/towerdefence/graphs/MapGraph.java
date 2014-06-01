@@ -1,7 +1,7 @@
 package ar.edu.unq.tpi.games.towerdefence.graphs;
 
 import java.lang.reflect.Array;
-
+import java.awt.geom.Point2D.Double;
 
 public class MapGraph<T> {
 	private Node<T> matrix[][];
@@ -60,17 +60,18 @@ public class MapGraph<T> {
 		return this.getHeight()/this.getRows();
 	}
 	
-	private double obtainInitialX(double x){
-		double step = this.obtainHorizontalStep();
-		int colNumber = this.obtainColNumber(x);
-		return ((double)colNumber)*step;
+	
+	public Double obtainPosition(Double mousePosition){
+		double horizontalStep = this.obtainHorizontalStep();
+		double verticalStep = this.obtainVerticalStep();
+		int colNumber = this.obtainColNumber(mousePosition.x);
+		double x = ((double)colNumber)*horizontalStep;
+		int rowNumber = this.obtainRowNumber(mousePosition.y);
+		double y = ((double)rowNumber)*verticalStep;
+		return new Double(x, y);
 	}
 	
-	private double obtainInitialY(double y){
-		double step = this.obtainVerticalStep();
-		int rowNumber = this.obtainRowNumber(y);
-		return ((double)rowNumber)*step;
-	}
+
 	
 	
 	public double obtainHorizontalStep(){

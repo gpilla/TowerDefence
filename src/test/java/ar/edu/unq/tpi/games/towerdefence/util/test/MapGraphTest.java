@@ -10,6 +10,7 @@ import org.mockito.runners.VerboseMockitoJUnitRunner;
 
 import ar.edu.unq.tpi.games.towerdefence.graphs.MapGraph;
 import ar.edu.unq.tpi.games.towerdefence.graphs.Node;
+import java.awt.geom.Point2D.Double;
 
 @RunWith(VerboseMockitoJUnitRunner.class)
 public class MapGraphTest {
@@ -102,9 +103,7 @@ public class MapGraphTest {
 		int expectedCol4 = 5;
 		int actualCol4 = mapGraph.obtainRowNumber(x4);
 		assertEquals(expectedCol4, actualCol4);
-		
-		
-		
+
 	}
 
 	@Test
@@ -115,6 +114,16 @@ public class MapGraphTest {
 		Node<String> actualNode = mapGraph.obtainNode(25, 18);
 		String actualNodeElement = actualNode.getElement();
 		assertEquals(expectedNodeElement,actualNodeElement);
+	}
+	
+	@Test
+	public void obtainPosition(){
+		MapGraph<String> mapGraph = new MapGraph<String>(6,6,60,120);
+		Double mousePosition = new Double(25, 45);
+		Double expectedPosition = new Double(20, 40);
+		Double actualPosition = mapGraph.obtainPosition(mousePosition);
+		assertEquals(expectedPosition, actualPosition);
+		
 	}
 	
 }

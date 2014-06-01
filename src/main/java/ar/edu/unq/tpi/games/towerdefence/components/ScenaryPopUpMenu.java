@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.Point2D.Double;
 
-import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
@@ -12,6 +11,7 @@ import ar.edu.unq.tpi.games.towerdefence.components.units.BasicTower;
 
 public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
 
+	private static final long serialVersionUID = 1L;
 	private Scenary scenary;
 	private Double position;
 	private JMenuItem basicTower;
@@ -32,7 +32,8 @@ public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
 
 	public void actionPerformed(ActionEvent e) {
         if (e.getSource() == basicTower) {
-        	this.scenary.addTower(new BasicTower(position));
+        	Double towerPosition = this.scenary.getMapGraph().obtainPosition(this.position);
+        	this.scenary.addTower(new BasicTower(towerPosition));
         }        
     }
 	
