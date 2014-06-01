@@ -10,10 +10,9 @@ public class TowerDefenceLevel1 extends AbstractTowerDefenceLevel {
 		EnemyHorde enemyHorde = new EnemyHorde();
 		enemyHorde.setX(scenary.getCenter().getX()/2);
 		enemyHorde.setY(-100); // Una correccion que a pesar de su tamaño salga desde afuera de la pantall
-		enemyHorde.setUnits(10);
-		enemyHorde.setDelay(500);
+		enemyHorde.setUnits(20);
+		enemyHorde.setDelay(200);
 		this.addComponent(enemyHorde);
-	
 	}
 
 }

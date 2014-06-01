@@ -8,6 +8,7 @@ import ar.edu.unq.tpi.games.towerdefence.components.units.BasicTower;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 
 import com.uqbar.vainilla.DeltaState;
+import com.uqbar.vainilla.Game;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Rectangle;
@@ -28,12 +29,13 @@ public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
 		if ( deltaState.isMouseButtonReleased(MouseButton.LEFT) ) {
-			this.addTower(deltaState.getLastMousePosition());;
+			Double mousePosition = deltaState.getLastMousePosition();
+			ScenaryPopUpMenu menu = new ScenaryPopUpMenu(this, mousePosition );
+			menu.show(Game.getGameLauncher().getPlayerCanvas(), (int) mousePosition.getX(), (int) mousePosition.getY());
 		}
 	}
 
-	private void addTower(Double position) {
-		AbstractTower tower = new BasicTower(position);
+	public void addTower(AbstractTower tower) {
 		this.getScene().addComponent(tower);
 	}
 	
