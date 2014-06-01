@@ -24,16 +24,17 @@ public class MapGraph<T> {
 		this.matrix = (Node<T>[][])Array.newInstance(Node.class, rows,columns);
 	}
 	
-	public void addNode(double x, double y, T element){
+	public boolean addNode(double x, double y, T element){
 		int col = this.obtainColNumber(x);
 		int row = this.obtainRowNumber(y);
 		Node<T> node = this.getMatrix()[col][row];
 		if(node==null){
 			node = new Node<T>(element, row + "-" + col);
+			this.getMatrix()[col][row] = node;
+			return true;
 		}else{
-			node.setElement(element);
+			return false;
 		}
-		this.getMatrix()[col][row] = node;
 	}
 	
 	public Node<T> obtainNode(double x, double y){

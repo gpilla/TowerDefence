@@ -107,13 +107,23 @@ public class MapGraphTest {
 	}
 
 	@Test
-	public void addAndObtainNode(){
+	public void addNode_WithNotExistentNode(){
+		MapGraph<String> mapGraph = new MapGraph<String>(45,50,500,800);
+		String expectedNodeElement = "NodeElement";
+		boolean result = mapGraph.addNode(25, 18, expectedNodeElement);
+		Node<String> actualNode = mapGraph.obtainNode(25, 18);
+		String actualNodeElement = actualNode.getElement();
+		assertEquals(true, result);
+		assertEquals(expectedNodeElement,actualNodeElement);
+	}
+	
+	@Test
+	public void addNode_WithExistentNode(){
 		MapGraph<String> mapGraph = new MapGraph<String>(45,50,500,800);
 		String expectedNodeElement = "NodeElement";
 		mapGraph.addNode(25, 18, expectedNodeElement);
-		Node<String> actualNode = mapGraph.obtainNode(25, 18);
-		String actualNodeElement = actualNode.getElement();
-		assertEquals(expectedNodeElement,actualNodeElement);
+		boolean result = mapGraph.addNode(25, 18, expectedNodeElement);
+		assertEquals(false, result);
 	}
 	
 	@Test

@@ -33,7 +33,11 @@ public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
         if (e.getSource() == basicTower) {
         	Double towerPosition = this.scenary.getMapGraph().obtainPosition(this.position);
-        	this.scenary.addTower(new BasicTower(towerPosition));
+        	BasicTower tower= new BasicTower(towerPosition);
+        	//TODO: hacer a scenary un observer de la grilla o viceversa
+        	if(this.scenary.getMapGraph().addNode(towerPosition.x, towerPosition.y, tower)){
+        		this.scenary.addTower(tower);
+        	}
         }        
     }
 	
