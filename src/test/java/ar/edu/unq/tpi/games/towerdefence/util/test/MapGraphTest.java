@@ -10,7 +10,9 @@ import org.mockito.runners.VerboseMockitoJUnitRunner;
 
 import ar.edu.unq.tpi.games.towerdefence.graphs.MapGraph;
 import ar.edu.unq.tpi.games.towerdefence.graphs.Node;
+
 import java.awt.geom.Point2D.Double;
+import java.util.List;
 
 @RunWith(VerboseMockitoJUnitRunner.class)
 public class MapGraphTest {
@@ -111,10 +113,34 @@ public class MapGraphTest {
 		MapGraph<String> mapGraph = new MapGraph<String>(45,50,500,800);
 		String expectedNodeElement = "NodeElement";
 		boolean result = mapGraph.addNode(25, 18, expectedNodeElement);
-		Node<String> actualNode = mapGraph.obtainNode(25, 18);
+		Node<String> actualNode = mapGraph.obtainNode((double)25, (double)18);
 		String actualNodeElement = actualNode.getElement();
 		assertEquals(true, result);
 		assertEquals(expectedNodeElement,actualNodeElement);
+	}
+	
+	@Test
+	public void shortestPath_WithNotBlocking(){
+		MapGraph<String> mapGraph = new MapGraph<String>(6,6,60,60);
+		mapGraph.addNode(5, 35, "NodeElement");
+		mapGraph.addNode(15, 35, "NodeElement");
+		mapGraph.addNode(25, 35, "NodeElement");
+		mapGraph.addNode(35, 35, "NodeElement");
+		mapGraph.addNode(45, 35, "NodeElement");
+		mapGraph.addNode(5, 15, "NodeElement");
+		mapGraph.addNode(15, 15, "NodeElement");
+		mapGraph.addNode(25, 15, "NodeElement");
+		mapGraph.addNode(35, 15, "NodeElement");
+		mapGraph.addNode(55, 15, "NodeElement");
+		mapGraph.addNode(5, 25, "NodeElement");
+		mapGraph.addNode(15, 25, "NodeElement");
+		mapGraph.addNode(25, 25, "NodeElement");
+		mapGraph.addNode(35, 25, "NodeElement");
+		Node<String> source = mapGraph.obtainNode(0, 0);
+		Node<String> destination = mapGraph.obtainNode(5, 5);
+		List<Node<String>> path = mapGraph.getShortestPath(source, destination);
+		System.out.println(path);
+
 	}
 	
 	@Test

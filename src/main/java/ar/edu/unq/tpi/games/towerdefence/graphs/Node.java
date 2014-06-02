@@ -1,8 +1,14 @@
 package ar.edu.unq.tpi.games.towerdefence.graphs;
 
-public class Node<T> {
+import java.util.ArrayList;
+import java.util.List;
+
+public class Node<T> implements Comparable<Node<T>>{
 	private T element;
 	private String keyName="";
+	private List<Edge<T>> adjancencies = new ArrayList<Edge<T>>();
+	private double minDistance = Double.POSITIVE_INFINITY;
+	private Node<T> previous;
 	
 	public Node(){
 		
@@ -17,6 +23,14 @@ public class Node<T> {
 		this.setKeyName(keyName);
 	}
 	
+	public void addAdjancency(Node<T> node){
+		Edge<T> edge = new Edge<T>(this.getKeyName() + "->" + node.getKeyName() , node, 1);
+		this.getAdjancencies().add(edge);
+	}
+
+	public void cleanAdjacencies() {
+		this.getAdjancencies().clear();
+	}
 	
 	public T getElement() {
 		return element;
@@ -31,5 +45,40 @@ public class Node<T> {
 	public void setKeyName(String keyName) {
 		this.keyName = keyName;
 	}
+
+	public List<Edge<T>> getAdjancencies() {
+		return adjancencies;
+	}
+
+	public void setAdjancencies(List<Edge<T>> adjancencies) {
+		this.adjancencies = adjancencies;
+	}
+
+	public double getMinDistance() {
+		return minDistance;
+	}
+
+	public void setMinDistance(double minDistance) {
+		this.minDistance = minDistance;
+	}
+
+	public Node<T> getPrevious() {
+		return previous;
+	}
+
+	public void setPrevious(Node<T> previous) {
+		this.previous = previous;
+	}
+
+	@Override
+	public int compareTo(Node<T> other) {
+		return Double.compare(minDistance, other.minDistance);
+	}
+	
+	@Override
+	public String toString(){
+		return this.getKeyName();
+	}
+
 	
 }
