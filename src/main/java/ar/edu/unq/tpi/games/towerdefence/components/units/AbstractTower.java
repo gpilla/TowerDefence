@@ -8,7 +8,7 @@ import ar.edu.unq.tpi.games.towerdefence.components.Bullet;
 import ar.edu.unq.tpi.games.towerdefence.components.RangeShadow;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
 import ar.edu.unq.tpi.games.towerdefence.components.rules.AbstractTowerRule;
-import ar.edu.unq.tpi.games.towerdefence.components.rules.RightClickTowerRule;
+import ar.edu.unq.tpi.games.towerdefence.components.rules.LeftClickTowerRule;
 import ar.edu.unq.tpi.games.towerdefence.components.rules.ShootingTowerRule;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 import ar.edu.unq.tpi.games.towerdefence.util.BulletPoolSingleton;
@@ -62,7 +62,7 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	}
 	private void initRules() {
 		this.addRule(new ShootingTowerRule());
-		this.addRule(new RightClickTowerRule());
+		this.addRule(new LeftClickTowerRule());
 	}
 
 	protected void addRule(AbstractTowerRule rule) {

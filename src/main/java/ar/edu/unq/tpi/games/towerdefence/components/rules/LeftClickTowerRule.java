@@ -1,6 +1,5 @@
 package ar.edu.unq.tpi.games.towerdefence.components.rules;
 
-import java.awt.Component;
 import java.awt.geom.Point2D.Double;
 
 import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
@@ -10,11 +9,11 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.Game;
 import com.uqbar.vainilla.events.constants.MouseButton;
 
-public class RightClickTowerRule extends AbstractTowerRule {
+public class LeftClickTowerRule extends AbstractTowerRule {
 
 	@Override
 	public boolean mustApply(AbstractTower component, DeltaState deltaState) {
-		if (deltaState.isMouseButtonReleased(MouseButton.LEFT) && mouseOverComponent(component, deltaState)) {
+		if (deltaState.isMouseButtonReleased(MouseButton.LEFT) && this.mouseOverComponent(component, deltaState)) {
 			return true;
 		}
 		return false;

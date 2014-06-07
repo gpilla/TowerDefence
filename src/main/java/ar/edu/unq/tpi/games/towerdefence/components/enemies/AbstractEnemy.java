@@ -20,20 +20,20 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	
 	private double lives;
 
-	private Sound explosionSound;
+	private final Sound explosionSound;
 
 	private Animation explosionAppearance;
 	
 	private double destroyDelay = 0;
 	
 	public AbstractEnemy(double x, double y) {
-		lives = this.getIntPropertyFromConfig("lives");
+		this.lives = this.getIntPropertyFromConfig("lives");
 		this.setX(x);
 		this.setY(y);
 		this.setZ(100);
 		this.initRules();
 		this.setAppearance(this.getDefaultAppearance());
-		this.explosionSound = new SoundBuilder().buildSound(getStringPropertyFromConfig("explosion.sound"));
+		this.explosionSound = new SoundBuilder().buildSound(this.getStringPropertyFromConfig("explosion.sound"));
 		this.createExplosionAppearance();
 	}
 	
@@ -46,22 +46,22 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
-		if (destroyDelay == 0) {
+		if (this.destroyDelay == 0) {
 			for(AbstractEnemyRule rule : this.getRules()) {
 				if(rule.mustApply(this, deltaState)) {
 					rule.apply(this, deltaState);
 				}
 			}
 		} else {
-			destroyDelay -= deltaState.getDelta();
-			if( destroyDelay <= 0 ) {
+			this.destroyDelay -= deltaState.getDelta();
+			if( this.destroyDelay <= 0 ) {
 				this.destroy();
 			}
 		}
 	}
 
 	public List<AbstractEnemyRule> getRules() {
-		return rules;
+		return this.rules;
 	}
 
 	public void setRules(List<AbstractEnemyRule> rules) {
@@ -74,7 +74,9 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 
 	public void hit() {
 		this.lives --; 
+		this.getScene().addPoints();
 		if( this.lives == 0 ) {
+			this.getScene().addKillPointBonus();
 			this.playExplosionSound();
 			this.setAppearance(this.explosionAppearance);
 			System.out.println(this.explosionAppearance.getDuration());
@@ -97,11 +99,11 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	// ---------------------------------------------------------------------------
 	
 	private void playExplosionSound() {
-		this.explosionSound.play((float) getIntPropertyFromConfig("explosion.sound.volume")/100);	
+		this.explosionSound.play((float) this.getIntPropertyFromConfig("explosion.sound.volume")/100);	
 	}
 
 	public double getDestroyDelay() {
-		return destroyDelay;
+		return this.destroyDelay;
 	}
 
 	public void setDestroyDelay(double d) {

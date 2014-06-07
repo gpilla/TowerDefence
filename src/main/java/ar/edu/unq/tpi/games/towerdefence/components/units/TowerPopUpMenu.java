@@ -9,41 +9,43 @@ import javax.swing.JPopupMenu;
 
 public class TowerPopUpMenu extends JPopupMenu implements ActionListener {
 	
-    JMenuItem levelUpTower;
-	private AbstractTower tower;
+	private static final long serialVersionUID = 1L;
+	JMenuItem levelUpTower;
+	private final AbstractTower tower;
 	private JMenuItem title;
     
     public TowerPopUpMenu(AbstractTower tower){
     	this.tower = tower;
     	this.setName("Lalalala");
-    	addTitleMenuItem();
-        addLevelUpMenuItem();
+    	this.addTitleMenuItem();
+        this.addLevelUpMenuItem();
         
     }
 
 	private void addTitleMenuItem() {
-		title = new JMenuItem(this.tower.getName() + " (Nivel " + this.tower.getCurrentLevel() + ")");
-		title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
-		title.setEnabled(false);
-		this.add(title);
+		this.title = new JMenuItem(this.tower.getName() + " (Nivel " + this.tower.getCurrentLevel() + ")");
+		this.title.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 20));
+		this.title.setEnabled(false);
+		this.add(this.title);
 		this.addSeparator();
 	}
 
 	private void addLevelUpMenuItem() {
-		levelUpTower = new JMenuItem();
-        levelUpTower.addActionListener(this);
-        if( tower.getCurrentLevel() < tower.getMaxLevel()) {
-        	levelUpTower.setText("Mejorar torre a Nivel " + (tower.getCurrentLevel() + 1) + " (Costo: -" + this.tower.getLevelUpCost() + ")");
+		this.levelUpTower = new JMenuItem();
+        this.levelUpTower.addActionListener(this);
+        if( this.tower.getCurrentLevel() < this.tower.getMaxLevel()) {
+        	this.levelUpTower.setText("Mejorar torre a Nivel " + (this.tower.getCurrentLevel() + 1) + " (Costo: -" + this.tower.getLevelUpCost() + ")");
         } else {
-        	levelUpTower.setText("Limite de mejoras alcanzado");
-        	levelUpTower.setEnabled(false);
+        	this.levelUpTower.setText("Limite de mejoras alcanzado");
+        	this.levelUpTower.setEnabled(false);
         }
-        add(levelUpTower);
+        this.add(this.levelUpTower);
 	}
     
-    public void actionPerformed(ActionEvent e) {
-        if (e.getSource() == levelUpTower) {
-        	tower.goLevelUp();
+    @Override
+	public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == this.levelUpTower) {
+        	this.tower.goLevelUp();
         }        
     }
     
