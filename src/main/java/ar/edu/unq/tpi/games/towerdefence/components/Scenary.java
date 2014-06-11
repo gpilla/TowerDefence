@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 
 import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
-import ar.edu.unq.tpi.games.towerdefence.graphs.MapGraph;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 
 import com.uqbar.vainilla.DeltaState;
@@ -13,6 +12,7 @@ import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Rectangle;
 import com.uqbar.vainilla.events.constants.MouseButton;
+import com.uqbar.vainilla.graphs.MapGraph;
 import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
