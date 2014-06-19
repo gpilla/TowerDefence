@@ -5,9 +5,10 @@ import java.awt.geom.Point2D.Double;
 
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Rectangle;
+import com.uqbar.vainilla.graphs.Valuable;
 
 
-public class BasicTower extends AbstractTower {
+public class BasicTower extends AbstractTower implements Valuable {
 
 	public BasicTower(Double position) {
 		super(position);
@@ -25,6 +26,11 @@ public class BasicTower extends AbstractTower {
 		//return TowerSpriteManager.INSTANCE.getSprite(36 - (int) sprite);
 		//return TowerSpriteManager.INSTANCE.getSprite(0);
 //		return new Animation(0.05, TowerSpriteManager.INSTANCE.getSprites());
+	}
+
+	@Override
+	public int value() {
+		return 1;
 	}
 	
 }
