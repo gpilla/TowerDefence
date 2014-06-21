@@ -3,31 +3,40 @@ package ar.edu.unq.tpi.games.towerdefence.scene.level;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.edu.unq.tpi.games.towerdefence.components.PointsCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.Scenary;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
+import ar.edu.unq.tpi.games.towerdefence.components.gui.MoneyCounter;
+import ar.edu.unq.tpi.games.towerdefence.components.gui.PointsCounter;
+import ar.edu.unq.tpi.games.towerdefence.util.TowerDefenceImageMapParser;
 
 import com.uqbar.vainilla.GameScene;
 
 public abstract class AbstractTowerDefenceLevel extends GameScene {
 
 	private List<AbstractEnemy> enemies = new ArrayList<AbstractEnemy>();
-	private Scenary scenary;
-	private PointsCounter counter;
+	protected Scenary scenary;
+	private PointsCounter pointsCounter;
+	private MoneyCounter moneyCounter;
 
 	@Override
 	protected void initializeComponents() {
 		this.initializeMap();
-		this.initializeCounter();
+		this.initializeCounters();
 	}
 
-	private void initializeCounter() {
-		this.counter = new PointsCounter();
-		this.addComponent(this.counter);
+	private void initializeCounters() {
+		this.pointsCounter = new PointsCounter();
+		this.addComponent(this.pointsCounter);
+		
+		this.moneyCounter = new MoneyCounter();
+		this.moneyCounter.setX(200);
+		this.addComponent(this.moneyCounter);
 	}
 
 	protected void initializeMap() {
-		this.scenary = new Scenary();
+		TowerDefenceImageMapParser mapParser = new TowerDefenceImageMapParser("images/maps/" + this.getClass().getSimpleName() + ".png");
+		mapParser.getTerrainGrid();
+		this.scenary = new Scenary(mapParser);
 		this.addComponent(this.scenary);
 	}
 
@@ -62,19 +71,19 @@ public abstract class AbstractTowerDefenceLevel extends GameScene {
 	}
 
 	public PointsCounter getCounter() {
-		return this.counter;
+		return this.pointsCounter;
 	}
 
 	public void setCounter(PointsCounter counter) {
-		this.counter = counter;
+		this.pointsCounter = counter;
 	}
-
-	public void addPoints() {
-		this.counter.addPoints("hitPoints");
+	
+	public void addPoints(double points) {
+		this.pointsCounter.addToValue(points);
 	}
-
-	public void addKillPointBonus() {
-		this.counter.addPoints("killPoints");
+	
+	public void addMoney(double money) {
+		this.moneyCounter.addToValue(money);
 	}
 
 }

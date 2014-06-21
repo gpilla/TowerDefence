@@ -15,8 +15,6 @@ public class TowerDefence extends Game {
 	private static int SIZE_WIDTH = ResourceUtil.getResourceInt("TowerDefence.game.width");
 	private static int SIZE_HEIGHT = ResourceUtil.getResourceInt("TowerDefence.game.height");
 	
-	
-	
 	public static void main(String[] args) throws Exception {
 		TowerDefence.setGameLauncher(new DesktopGameLauncher(new TowerDefence()));
 		getGameLauncher().launch();

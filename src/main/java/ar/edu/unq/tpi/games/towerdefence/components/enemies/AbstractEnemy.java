@@ -73,17 +73,32 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	}
 
 	public void hit() {
-		this.lives --; 
-		this.getScene().addPoints();
+		this.lives--; 
 		if( this.lives == 0 ) {
-			this.getScene().addKillPointBonus();
-			this.playExplosionSound();
-			this.setAppearance(this.explosionAppearance);
-			System.out.println(this.explosionAppearance.getDuration());
-			this.setX(this.getCenter().getX()-25);
-			this.setDestroyDelay(this.explosionAppearance.getDuration());
-			this.getScene().removeEnemy(this);
+			this.killAction();
+		} else {
+			this.hitAction();
 		}
+	}
+
+	private void hitAction() {
+		this.getScene().addPoints(this.getIntPropertyFromConfig("hit.points"));
+		this.getScene().addMoney(this.getIntPropertyFromConfig("hit.money"));
+	}
+
+	private void killAction() {
+		this.explosionAnimation();
+		this.getScene().removeEnemy(this);
+		this.getScene().addPoints(this.getIntPropertyFromConfig("kill.points"));
+		this.getScene().addMoney(this.getIntPropertyFromConfig("kill.money"));
+	}
+
+	private void explosionAnimation() {
+		this.playExplosionSound();
+		this.setAppearance(this.explosionAppearance);
+		System.out.println(this.explosionAppearance.getDuration());
+		this.setX(this.getCenter().getX()-25);
+		this.setDestroyDelay(this.explosionAppearance.getDuration());
 	} 	
 	
 	protected void createExplosionAppearance() {
