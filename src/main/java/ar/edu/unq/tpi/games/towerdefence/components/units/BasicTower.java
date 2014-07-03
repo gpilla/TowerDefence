@@ -30,7 +30,7 @@ public class BasicTower extends AbstractTower implements Valuable {
 
 	@Override
 	public int value() {
-		return 1;
+		return Integer.MAX_VALUE;
 	}
 
 	@Override

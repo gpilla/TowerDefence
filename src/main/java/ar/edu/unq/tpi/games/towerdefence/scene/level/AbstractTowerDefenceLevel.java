@@ -2,9 +2,11 @@ package ar.edu.unq.tpi.games.towerdefence.scene.level;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import ar.edu.unq.tpi.games.towerdefence.components.PointsCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.Scenary;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
+
 import com.uqbar.vainilla.GraphGameScene;
 
 public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
@@ -32,6 +34,10 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 	protected void initializeEnemies() {
 
 	}
+	
+	public void updateObservers(){
+		
+	}
 
 	public List<AbstractEnemy> getEnemies() {
 		return this.enemies;
@@ -44,6 +50,7 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 	public void addEnemy(AbstractEnemy enemy) {
 		this.enemies.add(enemy);
 		this.addComponent(enemy);
+		this.updateObservers();
 	}
 
 	public void removeEnemy(AbstractEnemy enemy) {

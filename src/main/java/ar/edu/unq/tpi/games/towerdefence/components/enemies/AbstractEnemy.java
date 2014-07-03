@@ -16,6 +16,7 @@ import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
+import com.uqbar.vainilla.utils.Observer;
 import com.uqbar.vainilla.utils.ResourceUtil;
 
 public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLevel> implements Valuable {
@@ -55,6 +56,11 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		this.addRule(new MoveEnemyRule());
 	}
 
+	@Override
+	public void updateStatus(){
+		this.getPath().clear();
+	}
+	
 	@Override
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
