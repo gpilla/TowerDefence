@@ -11,21 +11,26 @@ import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Animation;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Sprite;
+import com.uqbar.vainilla.graphs.MapGraph;
+import com.uqbar.vainilla.graphs.Node;
+import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
+import com.uqbar.vainilla.utils.ResourceUtil;
 
-public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLevel> {
+public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLevel> implements Valuable {
 
 	private List<AbstractEnemyRule> rules = new ArrayList<AbstractEnemyRule>();
-	
 	private double lives;
-
 	private final Sound explosionSound;
-
 	private Animation explosionAppearance;
-	
 	private double destroyDelay = 0;
-	
+	private double waitingTime = 0;
+	private MapGraph<Valuable> mapGraph;
+	private List<Node<Valuable>> path = new ArrayList<Node<Valuable>>();
+
+
+
 	public AbstractEnemy(double x, double y) {
 		this.lives = this.getIntPropertyFromConfig("lives");
 		this.setX(x);
@@ -35,8 +40,15 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		this.setAppearance(this.getDefaultAppearance());
 		this.explosionSound = new SoundBuilder().buildSound(this.getStringPropertyFromConfig("explosion.sound"));
 		this.createExplosionAppearance();
+		this.setMapGraph(new MapGraph<Valuable>(
+				ResourceUtil.getResourceInt("TowerDefenceLevel1.rows"), 
+				ResourceUtil.getResourceInt("TowerDefenceLevel1.columns"), 
+				ResourceUtil.getResourceInt("TowerDefenceLevel1.height"), 
+				ResourceUtil.getResourceInt("TowerDefenceLevel1.width")));		
+		
 	}
-	
+
+
 	abstract protected Appearance getDefaultAppearance();
 
 	protected void initRules() {
@@ -47,10 +59,15 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	public void update(DeltaState deltaState) {
 		super.update(deltaState);
 		if (this.destroyDelay == 0) {
-			for(AbstractEnemyRule rule : this.getRules()) {
-				if(rule.mustApply(this, deltaState)) {
-					rule.apply(this, deltaState);
+			if(this.canMove()){
+				for(AbstractEnemyRule rule : this.getRules()) {
+					if(rule.mustApply(this, deltaState)) {
+						rule.apply(this, deltaState);
+					}
 				}
+				this.setWaitingTime(0);
+			}else{
+				this.increaseWaitingTime(deltaState.getDelta());
 			}
 		} else {
 			this.destroyDelay -= deltaState.getDelta();
@@ -58,6 +75,14 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 				this.destroy();
 			}
 		}
+	}
+	
+	private void increaseWaitingTime(double delta) {
+		this.setWaitingTime(this.getWaitingTime() + delta * 550);
+	}
+
+	private boolean canMove() {
+		return this.getWaitingTime()>1;
 	}
 
 	public List<AbstractEnemyRule> getRules() {
@@ -86,6 +111,22 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		}
 	} 	
 	
+	public Node<Valuable> obtainNextPosition(Node<Valuable> target){
+		
+		if(this.getPath().size()==0){
+			this.setPath(this.getMapGraph().getShortestPath(mapGraph.obtainNode(this.getX(),this.getY()),target));
+			if(this.getPath().size()>0){
+				return this.getPath().get(0);
+			}else{
+				return null;
+			}
+		}
+		Node<Valuable> nextPosition = this.getPath().get(0);
+		this.getPath().remove(0);
+		return nextPosition;
+		
+	}
+	
 	protected void createExplosionAppearance() {
 		Sprite[] sprites = new Sprite[46];
 		for (int i = 1; i <= 46; i++) {
@@ -93,6 +134,14 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		}
 		this.explosionAppearance = new Animation(0.01, sprites);
 	}
+	
+	public int value(){
+		return Integer.MAX_VALUE;
+	}
+	
+	public void changeValue(int value){	
+	}
+	
 
 	// ---------------------------------------------------------------------------
 	// Sonidos
@@ -110,4 +159,33 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		this.destroyDelay = d;
 	}
 
+	protected double getWaitingTime() {
+		return waitingTime;
+	}
+
+
+	protected void setWaitingTime(double waitingTime) {
+		this.waitingTime = waitingTime;
+	}
+
+
+	protected MapGraph<Valuable> getMapGraph() {
+		return mapGraph;
+	}
+
+
+	protected void setMapGraph(MapGraph<Valuable> mapGraph) {
+		this.mapGraph = mapGraph;
+	}
+
+
+	protected List<Node<Valuable>> getPath() {
+		return path;
+	}
+
+
+	protected void setPath(List<Node<Valuable>> path) {
+		this.path = path;
+	}
+	
 }

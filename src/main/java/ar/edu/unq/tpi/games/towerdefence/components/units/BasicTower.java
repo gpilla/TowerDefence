@@ -32,5 +32,11 @@ public class BasicTower extends AbstractTower implements Valuable {
 	public int value() {
 		return 1;
 	}
+
+	@Override
+	public void changeValue(int value) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

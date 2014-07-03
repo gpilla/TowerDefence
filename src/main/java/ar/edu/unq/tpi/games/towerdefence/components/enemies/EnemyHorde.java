@@ -4,6 +4,7 @@ import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
+import com.uqbar.vainilla.graphs.Valuable;
 
 public class EnemyHorde extends GameComponent<AbstractTowerDefenceLevel>{
 	
@@ -47,5 +48,6 @@ public class EnemyHorde extends GameComponent<AbstractTowerDefenceLevel>{
 	public void setDelayCountDown(int delayCountDown) {
 		this.delayCountDown = delayCountDown;
 	}
+
 
 }

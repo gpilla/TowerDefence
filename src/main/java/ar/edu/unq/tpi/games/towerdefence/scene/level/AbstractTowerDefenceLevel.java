@@ -2,14 +2,12 @@ package ar.edu.unq.tpi.games.towerdefence.scene.level;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import ar.edu.unq.tpi.games.towerdefence.components.PointsCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.Scenary;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
+import com.uqbar.vainilla.GraphGameScene;
 
-import com.uqbar.vainilla.GameScene;
-
-public abstract class AbstractTowerDefenceLevel extends GameScene {
+public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 
 	private List<AbstractEnemy> enemies = new ArrayList<AbstractEnemy>();
 	private Scenary scenary;

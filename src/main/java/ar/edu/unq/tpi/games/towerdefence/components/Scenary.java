@@ -18,16 +18,10 @@ import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	
-	private MapGraph<Valuable> mapGraph;
 	
 	public Scenary() {
 		this.setAppearance(this.getDefaultAppearance());
-		this.setMapGraph(
-				new MapGraph<Valuable>(
-						ResourceUtil.getResourceInt("TowerDefence.scenary.rows"), 
-						ResourceUtil.getResourceInt("TowerDefence.scenary.columns"), 
-						ResourceUtil.getResourceInt("TowerDefence.scenary.height"), 
-						ResourceUtil.getResourceInt("TowerDefence.scenary.width")));
+
 	}
 	
 	private Appearance getDefaultAppearance() {
@@ -46,14 +40,6 @@ public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 
 	public void addTower(AbstractTower tower) {
 		this.getScene().addComponent(tower);
-	}
-
-	public MapGraph<Valuable> getMapGraph() {
-		return mapGraph;
-	}
-
-	public void setMapGraph(MapGraph<Valuable> mapGraph) {
-		this.mapGraph = mapGraph;
 	}
 	
 }
