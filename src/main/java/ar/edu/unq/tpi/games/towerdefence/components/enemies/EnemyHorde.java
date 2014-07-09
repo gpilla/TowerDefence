@@ -17,8 +17,9 @@ public class EnemyHorde extends GameComponent<AbstractTowerDefenceLevel>{
 		this.delayCountDown -= deltaState.getDelta();
 		
 		if(units > 0 && this.delayCountDown <= 0) {
-			AbstractEnemy enemy = new BasicEnemy(this.getX(), this.getY());
+			AbstractEnemy enemy = new BasicEnemy(10, 10);
 			this.getScene().addEnemy(enemy);
+			enemy.initGraph();
 			this.delayCountDown = this.getDelay();
 			this.units--;
 		}

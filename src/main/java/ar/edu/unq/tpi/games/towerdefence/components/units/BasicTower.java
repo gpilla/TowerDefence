@@ -5,10 +5,9 @@ import java.awt.geom.Point2D.Double;
 
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Rectangle;
-import com.uqbar.vainilla.graphs.Valuable;
 
 
-public class BasicTower extends AbstractTower implements Valuable {
+public class BasicTower extends AbstractTower {
 
 	public BasicTower(Double position) {
 		super(position);

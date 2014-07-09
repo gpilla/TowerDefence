@@ -2,22 +2,22 @@ package ar.edu.unq.tpi.games.towerdefence.components;
 
 import java.awt.Color;
 import java.awt.geom.Point2D.Double;
-
+import java.util.ArrayList;
+import java.util.List;
 import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
-
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.Game;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.appearances.Rectangle;
 import com.uqbar.vainilla.events.constants.MouseButton;
-import com.uqbar.vainilla.graphs.MapGraph;
-import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	
+	
+	private List<AbstractTower> towers = new ArrayList<AbstractTower>();
 	
 	public Scenary() {
 		this.setAppearance(this.getDefaultAppearance());
@@ -39,7 +39,18 @@ public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	}
 
 	public void addTower(AbstractTower tower) {
+		System.out.println("addTower");
 		this.getScene().addComponent(tower);
+		this.getTowers().add(tower);
 	}
-	
+
+	public List<AbstractTower> getTowers() {
+		return towers;
+	}
+
+	public void setTowers(List<AbstractTower> towers) {
+		this.towers = towers;
+	}
+
+
 }

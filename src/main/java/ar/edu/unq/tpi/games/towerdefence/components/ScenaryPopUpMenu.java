@@ -7,6 +7,7 @@ import java.awt.geom.Point2D.Double;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 import ar.edu.unq.tpi.games.towerdefence.components.units.BasicTower;
 
 public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
@@ -33,11 +34,15 @@ public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
 	public void actionPerformed(ActionEvent e) {
         if (e.getSource() == basicTower) {
         	Double towerPosition = this.scenary.getScene().getMapGraph().obtainPosition(this.position);
-        	BasicTower tower= new BasicTower(towerPosition);
+        	AbstractTower tower= new BasicTower(towerPosition);
         	//TODO: hacer a scenary un observer de la grilla o viceversa
-        	if(this.scenary.getScene().getMapGraph().addNode(towerPosition.x, towerPosition.y, tower)){
+        	if(this.scenary.getScene().getMapGraph().addNode(towerPosition.getX(), towerPosition.getY(), tower)){
+//        		System.out.println("Se agrego una torre y:" + this.scenary.getScene().getMapGraph().obtainRowNumber(towerPosition.getY()));
+//        		System.out.println("Se agrego una torre x:" + this.scenary.getScene().getMapGraph().obtainColNumber(towerPosition.getX()));
         		this.scenary.addTower(tower);
+        		this.scenary.getScene().updateObservers(tower);
         	}
+        	
         }        
     }
 	

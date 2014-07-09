@@ -6,6 +6,7 @@ import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
 
 import ar.edu.unq.tpi.games.towerdefence.components.rules.AbstractEnemyRule;
+import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 
 public class MoveEnemyRule extends AbstractEnemyRule {
 
@@ -18,15 +19,15 @@ public class MoveEnemyRule extends AbstractEnemyRule {
 	public void apply(AbstractEnemy component, DeltaState deltaState) {
 		MapGraph<Valuable> mapGraph = component.getMapGraph();
 		Node<Valuable> source = mapGraph.obtainNode(component.getX(),component.getY());
-		Node<Valuable> destination = mapGraph.obtainNode(550.1, 550.1);
+		Node<Valuable> destination = mapGraph.obtainNode(356,417);
 		Node<Valuable> nextPosition = component.obtainNextPosition(destination);
 		if(nextPosition!=null)
 		{
-			source.setMinDistance(Double.POSITIVE_INFINITY);
+			source.setMinDistance(Integer.MAX_VALUE);
 			source.setPrevious(null);
 			component.setX(mapGraph.obtainRealXPosition((int)nextPosition.getColumn()));
 			component.setY(mapGraph.obtainRealYPosition((int)nextPosition.getRow()));
-			nextPosition.setMinDistance(Double.POSITIVE_INFINITY);
+			nextPosition.setMinDistance(Integer.MAX_VALUE);
 			nextPosition.setPrevious(null);
 		}
 	}

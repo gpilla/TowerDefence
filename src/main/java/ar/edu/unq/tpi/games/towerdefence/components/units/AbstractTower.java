@@ -17,12 +17,13 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.colissions.CollisionDetector;
+import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
 import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
-abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLevel> {
+public abstract  class AbstractTower extends GameComponent<AbstractTowerDefenceLevel>  implements Valuable {
 	
 	private double shootingDelayCountDown;
 	
@@ -39,8 +40,8 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	private Vector2D vector  = new Vector2D(0, 1);
 
 	public AbstractTower(Double position) {
-		this.setX(position.getX() - getIntPropertyFromConfig("width")/2);
-		this.setY(position.getY() - getIntPropertyFromConfig("height")/2);
+		this.setX(position.getX());
+		this.setY(position.getY());
 		this.setZ(100);
 		this.initRules();
 		this.createRangeShadow();
@@ -84,18 +85,18 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	abstract protected Appearance getDefaultAppearance();
 	
 	public void shoot() {
-		if (this.getShootingDelay() <= 0) {
-			this.playShootSound();
-			Bullet bullet = BulletPoolSingleton.getInstance().obtainBullet();
-			bullet.setVector(this.getVector());
-			bullet.setRange(this.getBulletRange());
-			bullet.setX(this.getX() + this.getWidth()/2 -15);
-			bullet.setY(this.getY() + this.getHeight()/2 -15);
-			bullet.setSpeed(100);
-			this.getScene().addComponent(bullet);
-			
-			this.setShootingDelay(getIntPropertyFromConfigByLevel("bullet.delay"));
-		}
+//		if (this.getShootingDelay() <= 0) {
+//			this.playShootSound();
+//			Bullet bullet = BulletPoolSingleton.getInstance().obtainBullet();
+//			bullet.setVector(this.getVector());
+//			bullet.setRange(this.getBulletRange());
+//			bullet.setX(this.getX() + this.getWidth()/2 -15);
+//			bullet.setY(this.getY() + this.getHeight()/2 -15);
+//			bullet.setSpeed(100);
+//			this.getScene().addComponent(bullet);
+//			
+//			this.setShootingDelay(getIntPropertyFromConfigByLevel("bullet.delay"));
+//		}
 	}
 
 	private void playShootSound() {

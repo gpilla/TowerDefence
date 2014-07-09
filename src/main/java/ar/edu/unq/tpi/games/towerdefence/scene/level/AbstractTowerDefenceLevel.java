@@ -6,6 +6,7 @@ import java.util.List;
 import ar.edu.unq.tpi.games.towerdefence.components.PointsCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.Scenary;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
+import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 
 import com.uqbar.vainilla.GraphGameScene;
 
@@ -14,6 +15,7 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 	private List<AbstractEnemy> enemies = new ArrayList<AbstractEnemy>();
 	private Scenary scenary;
 	private PointsCounter counter;
+	private List<AbstractTower> towers = new ArrayList<AbstractTower>();
 
 	@Override
 	protected void initializeComponents() {
@@ -35,8 +37,16 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 
 	}
 	
-	public void updateObservers(){
+	public void updateObservers(AbstractTower tower) {
+		for (AbstractEnemy enemy : this.getEnemies()) {
+			enemy.updateStatus(tower);
+		}
 		
+	}
+
+	
+	public void updateObservers(){
+
 	}
 
 	public List<AbstractEnemy> getEnemies() {
@@ -81,5 +91,14 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 	public void addKillPointBonus() {
 		this.counter.addPoints("killPoints");
 	}
+
+	public List<AbstractTower> getTowers() {
+		return towers;
+	}
+
+	public void setTowers(List<AbstractTower> towers) {
+		this.towers = towers;
+	}
+
 
 }
