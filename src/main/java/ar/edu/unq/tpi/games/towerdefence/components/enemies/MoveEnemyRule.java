@@ -19,8 +19,7 @@ public class MoveEnemyRule extends AbstractEnemyRule {
 	public void apply(AbstractEnemy component, DeltaState deltaState) {
 		MapGraph<Valuable> mapGraph = component.getMapGraph();
 		Node<Valuable> source = mapGraph.obtainNode(component.getX(),component.getY());
-		Node<Valuable> destination = mapGraph.obtainNode(356,417);
-		Node<Valuable> nextPosition = component.obtainNextPosition(destination);
+		Node<Valuable> nextPosition = component.obtainNextPosition();
 		if(nextPosition!=null)
 		{
 			source.setMinDistance(Integer.MAX_VALUE);

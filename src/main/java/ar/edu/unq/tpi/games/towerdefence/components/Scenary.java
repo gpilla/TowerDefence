@@ -39,7 +39,6 @@ public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	}
 
 	public void addTower(AbstractTower tower) {
-		System.out.println("addTower");
 		this.getScene().addComponent(tower);
 		this.getTowers().add(tower);
 	}

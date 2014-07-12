@@ -1,5 +1,6 @@
 package ar.edu.unq.tpi.games.towerdefence.components.enemies;
 
+import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +34,7 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	private double destroyDelay = 0;
 	private double waitingTime = 0;
 	private MapGraph<Valuable> mapGraph;
-	private List<Node<Valuable>> path = new ArrayList<Node<Valuable>>();
+	private List<Node<Valuable>> path = null;
 
 
 
@@ -86,13 +87,13 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		System.out.println("AbstracyEnemy - Se agrego una torre x:" + column);
 		Valuable valuable = new BasicValuable(Integer.MAX_VALUE);
 		this.getMapGraph().addNode(row, column, valuable);
-		this.getPath().clear();
+		//this.getPath().clear();
 	}
 	
 	
 	@Override
 	public void updateStatus(){
-		this.getPath().clear();
+		//this.getPath().clear();
 	}
 	
 	@Override
@@ -151,9 +152,11 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		}
 	} 	
 	
-	public Node<Valuable> obtainNextPosition(Node<Valuable> target){
+	public Node<Valuable> obtainNextPosition(){
 		
-		if(this.getPath().size()==0){
+		if(this.getPath()==null){
+			Node<Valuable> target = this.obtainTarget();
+			
 			this.setPath(this.getMapGraph().getShortestPath(mapGraph.obtainNode(this.getX(),this.getY()),target));
 			if(this.getPath().size()>0){
 				return this.getPath().get(0);
@@ -161,12 +164,24 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 				return null;
 			}
 		}
-		Node<Valuable> nextPosition = this.getPath().get(0);
-		this.getPath().remove(0);
-		return nextPosition;
+		
+		if(this.getPath().size()>0){
+			Node<Valuable> nextPosition = this.getPath().get(0);
+			this.getPath().remove(0);
+			return nextPosition;
+		}else{
+			return null;
+		}
 		
 	}
 	
+	private Node<Valuable> obtainTarget() {
+		List<Point> targets = this.getMapGraph().getColorsMap().get(1237980);
+		int index = (int) (Math.random() * (targets.size()));
+		Point point = targets.get(index);
+		return this.getMapGraph().obtainNode(point.y,point.x);
+	}
+
 	protected void createExplosionAppearance() {
 		Sprite[] sprites = new Sprite[46];
 		for (int i = 1; i <= 46; i++) {
