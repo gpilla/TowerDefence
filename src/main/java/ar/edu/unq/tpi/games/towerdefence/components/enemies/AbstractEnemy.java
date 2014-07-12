@@ -23,7 +23,6 @@ import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
 import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
-import com.uqbar.vainilla.utils.ResourceUtil;
 
 public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLevel> implements Valuable {
 
