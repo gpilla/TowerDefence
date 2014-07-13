@@ -2,12 +2,21 @@ package ar.edu.unq.tpi.games.towerdefence;
 
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.io.File;
+import java.io.IOException;
+
+import javax.sound.midi.InvalidMidiDataException;
+import javax.sound.midi.MidiSystem;
+import javax.sound.midi.MidiUnavailableException;
+import javax.sound.midi.Sequence;
+import javax.sound.midi.Sequencer;
 
 import ar.edu.unq.tpi.games.towerdefence.scene.level.TowerDefenceLevel1;
 import ar.edu.unq.tpi.games.towerdefence.util.BulletPoolSingleton;
 
 import com.uqbar.vainilla.DesktopGameLauncher;
 import com.uqbar.vainilla.Game;
+import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
 import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class TowerDefence extends Game {
@@ -25,9 +34,26 @@ public class TowerDefence extends Game {
 	public TowerDefence(){
 		super();
 		this.initializeBulletPool();
+		this.playBackgroundMusic();
 	}
 	
 	
+	private void playBackgroundMusic() {
+		try {
+			File midiFile;
+			midiFile = new File(new ClassLoaderResourcesProvider().getResource("sounds/bg.mid").getFile());
+			Sequence song = MidiSystem.getSequence(midiFile);
+			Sequencer midiPlayer = MidiSystem.getSequencer();
+			midiPlayer.open();
+			midiPlayer.setSequence(song);
+			midiPlayer.setLoopCount(Sequencer.LOOP_CONTINUOUSLY);
+			midiPlayer.start();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+
 	@Override
 	protected void setUpScenes() {
 		TowerDefenceLevel1 scene = new TowerDefenceLevel1();
