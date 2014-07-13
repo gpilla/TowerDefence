@@ -7,6 +7,10 @@ import java.awt.geom.Point2D.Double;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
 
+import com.uqbar.vainilla.graphs.Node;
+import com.uqbar.vainilla.graphs.Valuable;
+
+import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 import ar.edu.unq.tpi.games.towerdefence.components.units.BasicTower;
 
 public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
@@ -24,20 +28,29 @@ public class ScenaryPopUpMenu extends JPopupMenu implements ActionListener{
 	
 	
 	private void addBasicTowerMenuItem() {
-		basicTower = new JMenuItem();
-		basicTower.setText("Torre básica");
-		basicTower.addActionListener(this);
-		add(basicTower);
+		Double towerPosition = this.scenary.getScene().getMapGraph().obtainPosition(this.position);
+    	Node<Valuable> node = this.scenary.getScene().getMapGraph().obtainNode(towerPosition.getX(), towerPosition.getY());
+    	
+    	if (node==null || node.getElement().value()<=1) {
+    		JMenuItem notAllowedMessage = new JMenuItem();
+    		notAllowedMessage.setText("¡Camino! : No se puede poner una torre aquí.");
+    		notAllowedMessage.addActionListener(this);
+    		notAllowedMessage.setEnabled(false);
+    		add(notAllowedMessage);	
+    	} else {
+	    	basicTower = new JMenuItem();
+			basicTower.setText("Torre básica");
+			basicTower.addActionListener(this);
+			add(basicTower);
+    	}
+		
 	}
 
 	public void actionPerformed(ActionEvent e) {
         if (e.getSource() == basicTower) {
-        	Double towerPosition = this.scenary.getMapGraph().obtainPosition(this.position);
-        	BasicTower tower= new BasicTower(towerPosition);
-        	//TODO: hacer a scenary un observer de la grilla o viceversa
-        	if(this.scenary.getMapGraph().addNode(towerPosition.x, towerPosition.y, tower)){
-        		this.scenary.addTower(tower);
-        	}
+        	Double towerPosition = this.scenary.getScene().getMapGraph().obtainPosition(this.position);
+    		AbstractTower tower= new BasicTower(towerPosition);
+    		this.scenary.addTower(tower);
         }        
     }
 	

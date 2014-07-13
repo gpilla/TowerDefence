@@ -8,13 +8,19 @@ import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
 import ar.edu.unq.tpi.games.towerdefence.components.gui.MoneyCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.gui.PointsCounter;
 import ar.edu.unq.tpi.games.towerdefence.util.TowerDefenceImageMapParser;
+import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 
-import com.uqbar.vainilla.GameScene;
 
-public abstract class AbstractTowerDefenceLevel extends GameScene {
+import com.uqbar.vainilla.GraphGameScene;
+
+public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 
 	private List<AbstractEnemy> enemies = new ArrayList<AbstractEnemy>();
+
 	protected Scenary scenary;
+	
+	private List<AbstractTower> towers = new ArrayList<AbstractTower>();
+	
 	private PointsCounter pointsCounter;
 	private MoneyCounter moneyCounter;
 
@@ -36,11 +42,22 @@ public abstract class AbstractTowerDefenceLevel extends GameScene {
 	protected void initializeMap() {
 		TowerDefenceImageMapParser mapParser = new TowerDefenceImageMapParser("images/maps/" + this.getClass().getSimpleName() + ".png");
 		mapParser.getTerrainGrid();
-		this.scenary = new Scenary(mapParser);
+		this.scenary = new Scenary();
 		this.addComponent(this.scenary);
 	}
 
 	protected void initializeEnemies() {
+
+	}
+	
+	public void updateObservers(AbstractTower tower) {
+		for (AbstractEnemy enemy : this.getEnemies()) {
+			enemy.updateStatus(tower);
+		}
+	}
+
+	
+	public void updateObservers(){
 
 	}
 
@@ -55,6 +72,7 @@ public abstract class AbstractTowerDefenceLevel extends GameScene {
 	public void addEnemy(AbstractEnemy enemy) {
 		this.enemies.add(enemy);
 		this.addComponent(enemy);
+		this.updateObservers();
 	}
 
 	public void removeEnemy(AbstractEnemy enemy) {
@@ -85,5 +103,14 @@ public abstract class AbstractTowerDefenceLevel extends GameScene {
 	public void addMoney(double money) {
 		this.moneyCounter.addToValue(money);
 	}
+
+	public List<AbstractTower> getTowers() {
+		return towers;
+	}
+
+	public void setTowers(List<AbstractTower> towers) {
+		this.towers = towers;
+	}
+
 
 }

@@ -26,5 +26,16 @@ public class BasicTower extends AbstractTower {
 		//return TowerSpriteManager.INSTANCE.getSprite(0);
 //		return new Animation(0.05, TowerSpriteManager.INSTANCE.getSprites());
 	}
+
+	@Override
+	public int value() {
+		return Integer.MAX_VALUE;
+	}
+
+	@Override
+	public void changeValue(int value) {
+		// TODO Auto-generated method stub
+		
+	}
 	
 }

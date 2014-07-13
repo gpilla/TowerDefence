@@ -17,12 +17,13 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Appearance;
 import com.uqbar.vainilla.colissions.CollisionDetector;
+import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
 import com.uqbar.vainilla.sound.SoundBuilder;
 import com.uqbar.vainilla.utils.ResourceUtil;
 import com.uqbar.vainilla.utils.Vector2D;
 
-abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLevel> {
+public abstract  class AbstractTower extends GameComponent<AbstractTowerDefenceLevel>  implements Valuable {
 	
 	private double shootingDelayCountDown;
 	
@@ -39,8 +40,8 @@ abstract public class AbstractTower extends GameComponent<AbstractTowerDefenceLe
 	private Vector2D vector  = new Vector2D(0, 1);
 
 	public AbstractTower(Double position) {
-		this.setX(position.getX() - getIntPropertyFromConfig("width")/2);
-		this.setY(position.getY() - getIntPropertyFromConfig("height")/2);
+		this.setX(position.getX());
+		this.setY(position.getY());
 		this.setZ(100);
 		this.initRules();
 		this.createRangeShadow();
