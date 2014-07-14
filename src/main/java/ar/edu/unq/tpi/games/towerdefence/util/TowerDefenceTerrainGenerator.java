@@ -22,6 +22,7 @@ public class TowerDefenceTerrainGenerator {
 
 	public TowerDefenceTerrainGenerator(TowerDefenceImageMapParser mapParser, int height, int width) {
 		this.terrainGrid = mapParser.getTerrainGrid();
+		//this.terrainGrid = mapParser.getUnitDensityMap();
 		this.width = width;
 		this.height = height;
 		
@@ -34,30 +35,32 @@ public class TowerDefenceTerrainGenerator {
 		return new Sprite(this.getImage());
 	}
 	
-	public BufferedImage getImage() {
+	public BufferedImage getImage(Color[][] terrainGrid, int cellSize) {
 		BufferedImage image = null;
-		image = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_BGR);
+		image = new BufferedImage(terrainGrid[0].length * cellSize, terrainGrid.length * cellSize, BufferedImage.TYPE_INT_BGR);
+		
 		try {
 			Graphics graphics = image.getGraphics();
 			
 			Color terrainColor;
 			
 			for (int i = 0; i < terrainGrid.length; i++) {
-				int x = i * this.cellSize;
+				int x = i * cellSize;
 				for (int j = 0; j < terrainGrid[0].length; j++) {
 					int y = j * cellSize;
 					terrainColor = terrainGrid[i][j];
-					System.out.println(terrainColor.getRGB());
-					//if( terrainAllowedColors.contains(terrainColor)) {
-						graphics.setColor(terrainColor);
-						graphics.fillRect(y, x, this.cellSize, this.cellSize);
-					//}
+					graphics.setColor(terrainColor);
+					graphics.fillRect(y, x, cellSize, cellSize);
 				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		return image;
+	}
+	
+	public BufferedImage getImage() {
+		return this.getImage(this.terrainGrid, this.cellSize);
 	}
 
 	public int getWidth() {

@@ -32,7 +32,7 @@ public class TowerDefence extends Game {
 	public TowerDefence(){
 		super();
 		this.initializeBulletPool();
-		this.playBackgroundMusic();
+		//this.playBackgroundMusic();
 	}
 	
 	

@@ -1,11 +1,8 @@
 package ar.edu.unq.tpi.games.towerdefence.components.enemies;
 
-import java.awt.Point;
-import java.io.IOException;
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import ar.edu.unq.tpi.games.towerdefence.components.rules.AbstractEnemyRule;
 import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
@@ -15,67 +12,76 @@ import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Animation;
 import com.uqbar.vainilla.appearances.Appearance;
-import com.uqbar.vainilla.appearances.Sprite;
 import com.uqbar.vainilla.graphs.BasicValuable;
 import com.uqbar.vainilla.graphs.MapGraph;
 import com.uqbar.vainilla.graphs.Node;
 import com.uqbar.vainilla.graphs.Valuable;
 import com.uqbar.vainilla.sound.Sound;
-import com.uqbar.vainilla.sound.SoundBuilder;
-import com.uqbar.vainilla.utils.ClassLoaderResourcesProvider;
 
 public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLevel> implements Valuable {
 
 	private List<AbstractEnemyRule> rules = new ArrayList<AbstractEnemyRule>();
+	
+	private Double mapPosition;
+	
 	private double lives;
-	private final Sound explosionSound;
+	
+	private Sound explosionSound;
 	private Animation explosionAppearance;
 	private double destroyDelay = 0;
 	private double waitingTime = 0;
+	
 	private MapGraph<Valuable> mapGraph;
 	private List<Node<Valuable>> path = null;
 
-	public AbstractEnemy(double x, double y) {
-		super(x,y);
-		this.lives = this.getIntPropertyFromConfig("lives");
-		this.setX(x);
-		this.setY(y);
+	public AbstractEnemy(Double position) {
+		super();
+		this.setX(position.getX());
+		this.setY(position.getY());
 		this.setZ(100);
+		
+		//this.setMapPosition(position);
+		
+		this.lives = this.getIntPropertyFromConfig("lives");
+		this.initializeAppearanceAndSound();
 		this.initRules();
+	}
+	
+	private void initializeAppearanceAndSound() {
+		this.explosionSound = EnemyHelper.getExplosionSound();
 		this.setAppearance(this.getDefaultAppearance());
-		this.explosionSound = new SoundBuilder().buildSound(this.getStringPropertyFromConfig("explosion.sound"));
-		this.createExplosionAppearance();
-
+		this.explosionAppearance = EnemyHelper.getExplosionAppearance();
 	}
 
-	public void initGraph(){
-		try {
-			this.setMapGraph(new MapGraph<Valuable>(ImageIO.read(new ClassLoaderResourcesProvider().getResource("images/map1.png"))));
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		this.initTowers();
-	}
+//	public void initGraph(){
+//		try {
+//			this.setMapGraph(new MapGraph<Valuable>(ImageIO.read(new ClassLoaderResourcesProvider().getResource("images/map1.png"))));
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		
+//		this.initTowers();
+//	}
 
-	private void initTowers() {
-		if(this.getScene()!=null){
-			for(AbstractTower tower : this.getScene().getTowers()){
-				this.updateStatus(tower);
-			}
-		}else{
-			System.out.println("NULLLL");
-		}
-		
-	}
+//	private void initTowers() {
+//		if(this.getScene()!=null){
+//			for(AbstractTower tower : this.getScene().getTowers()){
+//				this.updateStatus(tower);
+//			}
+//		}else{
+//			System.out.println("NULLLL");
+//		}
+//		
+//	}
 
 	abstract protected Appearance getDefaultAppearance();
 
 	protected void initRules() {
 		this.addRule(new MoveEnemyRule());
 	}
+	
 	public void updateStatus(AbstractTower tower) {
 		int column = this.getMapGraph().obtainColNumber(tower.getX());
 		int row = this.getMapGraph().obtainRowNumber(tower.getY());
@@ -164,18 +170,11 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 	
 	public Node<Valuable> obtainNextPosition(){
 		
-		if(this.getPath()==null){
-			Node<Valuable> target = this.obtainTarget();
-			
-			this.setPath(this.getMapGraph().getShortestPath(mapGraph.obtainNode(this.getX(),this.getY()),target));
-			if(this.getPath().size()>0){
-				return this.getPath().get(0);
-			}else{
-				return null;
-			}
+		if (this.getPath() == null) {
+			this.generatePath();
 		}
 		
-		if(this.getPath().size()>0){
+		if ( this.getPath().size() > 0 ) {
 			Node<Valuable> nextPosition = this.getPath().get(0);
 			this.getPath().remove(0);
 			return nextPosition;
@@ -184,20 +183,20 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 		}
 		
 	}
+
+	private void generatePath() {
+		Node<Valuable> target = this.obtainTarget();
+		this.setPath(this.getMapGraph().getShortestPath(mapGraph.obtainNode(this.getX(),this.getY()),target));
+	}
 	
 	private Node<Valuable> obtainTarget() {
-		List<Point> targets = this.getMapGraph().getColorsMap().get(1237980);
+		ArrayList<Double> targets = this.getScene().getMapParser().getEnemyTargetPoints();
+		//List <Point> targets = this.getMapGraph().getColorsMap().get(1237980);
 		int index = (int) (Math.random() * (targets.size()));
-		Point point = targets.get(index);
-		return this.getMapGraph().obtainNode(point.y,point.x);
-	}
-
-	protected void createExplosionAppearance() {
-		Sprite[] sprites = new Sprite[46];
-		for (int i = 1; i <= 46; i++) {
-			sprites[i-1] = Sprite.fromImage("images/explosion/"+i+".png").crop(25,65,70,63).scale(0.5);
-		}
-		this.explosionAppearance = new Animation(0.01, sprites);
+		Double target = targets.get(index);
+		double x = target.getX() * 10; // FIXME
+		double y = target.getY() * 10; // FIXME
+		return this.getMapGraph().obtainNode(x, y);
 	}
 	
 	public int value(){
@@ -251,6 +250,14 @@ public abstract class AbstractEnemy extends GameComponent<AbstractTowerDefenceLe
 
 	protected void setPath(List<Node<Valuable>> path) {
 		this.path = path;
+	}
+
+	public Double getMapPosition() {
+		return mapPosition;
+	}
+
+	public void setMapPosition(Double mapPosition) {
+		this.mapPosition = mapPosition;
 	}
 
 }

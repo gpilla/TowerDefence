@@ -1,10 +1,13 @@
 package ar.edu.unq.tpi.games.towerdefence.scene.level;
 
+import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.edu.unq.tpi.games.towerdefence.components.Casttle;
 import ar.edu.unq.tpi.games.towerdefence.components.Scenary;
 import ar.edu.unq.tpi.games.towerdefence.components.enemies.AbstractEnemy;
+import ar.edu.unq.tpi.games.towerdefence.components.gui.LifesCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.gui.MoneyCounter;
 import ar.edu.unq.tpi.games.towerdefence.components.gui.PointsCounter;
 import ar.edu.unq.tpi.games.towerdefence.util.TowerDefenceImageMapParser;
@@ -23,6 +26,9 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 	
 	private PointsCounter pointsCounter;
 	private MoneyCounter moneyCounter;
+	private LifesCounter lifesCounter;
+	
+	private TowerDefenceImageMapParser mapParser;	
 
 	@Override
 	protected void initializeComponents() {
@@ -37,17 +43,31 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 		this.moneyCounter = new MoneyCounter();
 		this.moneyCounter.setX(200);
 		this.addComponent(this.moneyCounter);
+		
+		this.lifesCounter = new LifesCounter();
+		this.lifesCounter.setX(500);
+		this.addComponent(this.lifesCounter);
 	}
 
 	protected void initializeMap() {
-		TowerDefenceImageMapParser mapParser = new TowerDefenceImageMapParser("images/maps/" + this.getClass().getSimpleName() + ".png");
-		mapParser.getTerrainGrid();
-		this.scenary = new Scenary();
-		this.addComponent(this.scenary);
+		//this.setMapParser(new TowerDefenceImageMapParser("images/maps/" + this.getClass().getSimpleName() + ".png"));
+		this.setMapParser(new TowerDefenceImageMapParser("images/maps/miniMapa.png"));
+		initializeScenary();
+		initializeCasttles();
 	}
 
-	protected void initializeEnemies() {
+	private void initializeCasttles() {
+		ArrayList<Double> casttlesPositions = this.getMapParser().getEnemyTargetPoints();
+		
+		for (Double position : casttlesPositions) {
+			Casttle casttle = new Casttle(this.convertToScreenPoint(position));
+			this.addComponent(casttle);
+		}
+	}
 
+	private void initializeScenary() {
+		this.scenary = new Scenary();
+		this.addComponent(this.scenary);
 	}
 	
 	public void updateObservers(AbstractTower tower) {
@@ -56,7 +76,6 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 		}
 	}
 
-	
 	public void updateObservers(){
 
 	}
@@ -77,7 +96,6 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 
 	public void removeEnemy(AbstractEnemy enemy) {
 		this.enemies.remove(enemy);
-		// enemy.destroy();
 	}
 
 	public Scenary getScenary() {
@@ -112,5 +130,38 @@ public abstract class AbstractTowerDefenceLevel extends GraphGameScene {
 		this.towers = towers;
 	}
 
+	public TowerDefenceImageMapParser getMapParser() {
+		return mapParser;
+	}
 
+	public void setMapParser(TowerDefenceImageMapParser mapParser) {
+		this.mapParser = mapParser;
+	}
+	
+	public double convertToScreenX(double x) {
+		return getXDisplayProportion() * x;
+	}
+
+	public double getXDisplayProportion() {
+		return this.getGame().getDisplayWidth() / this.getMapParser().getWidth();
+	}
+	
+	public double convertToScreenY(double y) {
+		return getYDisplayProportion() * y;
+	}
+
+	public int getYDisplayProportion() {
+		return this.getGame().getDisplayHeight() / this.getMapParser().getHeight();
+	}
+
+	public Double convertToScreenPoint(Double point) {
+		point.x = point.x * getXDisplayProportion();
+		point.y = point.y * getYDisplayProportion();
+		return point;
+	}
+
+	public void removeLife() {
+		this.lifesCounter.removeToValue(1);
+	}
+	
 }

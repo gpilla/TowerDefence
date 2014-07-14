@@ -17,17 +17,17 @@ public class MoveEnemyRule extends AbstractEnemyRule {
 	@Override
 	public void apply(AbstractEnemy component, DeltaState deltaState) {
 		MapGraph<Valuable> mapGraph = component.getMapGraph();
-		Node<Valuable> source = mapGraph.obtainNode(component.getX(),component.getY());
+		Node<Valuable> source = mapGraph.obtainNode(component.getX(), component.getY());
 		Node<Valuable> nextPosition = component.obtainNextPosition();
-		if(nextPosition!=null)
-		{
+		if (nextPosition != null) {
 			source.setMinDistance(Integer.MAX_VALUE);
 			source.setPrevious(null);
-			component.setX(mapGraph.obtainRealXPosition((int)nextPosition.getColumn()));
-			component.setY(mapGraph.obtainRealYPosition((int)nextPosition.getRow()));
+			component.setX((int)nextPosition.getColumn());
+			component.setY((int)nextPosition.getRow());
 			nextPosition.setMinDistance(Integer.MAX_VALUE);
 			nextPosition.setPrevious(null);
 		}
+//		System.out.println(component.getX() + ";" + component.getY());
 	}
 
 }

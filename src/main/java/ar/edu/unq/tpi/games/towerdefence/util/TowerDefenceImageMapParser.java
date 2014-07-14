@@ -16,14 +16,26 @@ public class TowerDefenceImageMapParser extends AbstractImageMapParser {
 
 	public ArrayList<Double> getEnemySpawnPoints() {
 		ArrayList<Double> spawnPoints = new ArrayList<Double>(); 
-		for (int i = 0; i < this.getHeight(); i++) {
-			for (int j = 0; j < this.getWidth(); j++) {
+		for (int i = 0; i < this.getWidth(); i++) {
+			for (int j = 0; j < this.getHeight(); j++) {
 				if(this.getColor(i, j).equals(Color.RED)) {
 					spawnPoints.add(new Double(i, j));
 				}
 			}
 		}
 		return spawnPoints;
+	}
+	
+	public ArrayList<Double> getEnemyTargetPoints() {
+		ArrayList<Double> targetPoints = new ArrayList<Double>();
+		for (int i = 0; i < this.getWidth(); i++) {
+			for (int j = 0; j < this.getHeight(); j++) {
+				if(this.getColor(i, j).getRGB() == -10240) {
+					targetPoints.add(new Double(i, j));
+				}
+			}
+		}
+		return targetPoints;
 	}
 	
 	/**
@@ -33,20 +45,19 @@ public class TowerDefenceImageMapParser extends AbstractImageMapParser {
 	 * 
 	 * @return
 	 */
-	public Color[][] generateUnitDensityMapGrid() {
-		this.getTerrainGrid();
+	public void generateUnitDensityMapGrid() {
 		Color[][] densityMapGrid = this.getTerrainGrid();
 		for (int i = 0; i < densityMapGrid.length; i++) {
 			for (int j = 0; j < densityMapGrid[0].length; j++) {
-				// Si es verde clarito devuelve blanco, sino negro.
 				if (densityMapGrid[i][j].getRGB() == -5898369) {
-					densityMapGrid[i][j] = Color.WHITE;
-				} else {
 					densityMapGrid[i][j] = Color.BLACK;
+				} else {
+					densityMapGrid[i][j] = Color.WHITE;
 				}
 			}
 		}
-		return densityMapGrid;
+		System.out.println("Density map" + densityMapGrid);
+		TowerDefenceImageMapParser.unitDensityMap = densityMapGrid;
 	}
 	
 	public void fillPositionDensityMap(Double position) {
@@ -63,4 +74,5 @@ public class TowerDefenceImageMapParser extends AbstractImageMapParser {
 		}
 		return TowerDefenceImageMapParser.unitDensityMap;
 	}
+	
 }

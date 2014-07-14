@@ -1,5 +1,9 @@
 package ar.edu.unq.tpi.games.towerdefence.components.enemies;
 
+import java.awt.geom.Point2D.Double;
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
 
 import com.uqbar.vainilla.DeltaState;
@@ -10,17 +14,33 @@ public class EnemyHorde extends GameComponent<AbstractTowerDefenceLevel>{
 	private int units = 0;
 	private int delay = 0;
 	private int delayCountDown = 0;
+	private ArrayList<Double> spawnPoints;
+	
+	@Override
+	public void onSceneActivated() {
+		spawnPoints = this.getScene().getMapParser().getEnemySpawnPoints();
+		for (Double spawnPoint : spawnPoints) {
+			this.getScene().convertToScreenPoint(spawnPoint);
+		}
+		//this.getScene().getMapGraph();
+	}
 	
 	@Override
 	public void update(DeltaState deltaState) {
 		this.delayCountDown -= deltaState.getDelta();
-		if(units > 0 && this.delayCountDown <= 0) {
-			AbstractEnemy enemy = new BasicEnemy(10, 10);
+		if (units > 0 && this.delayCountDown <= 0) {
+			int index = (int) (Math.random() * (spawnPoints.size()));
+			Double spawnPoint = spawnPoints.get(index);
+			AbstractEnemy enemy = new BasicEnemy(spawnPoint);
+			enemy.setMapGraph(this.getScene().getMapGraph());
 			this.getScene().addEnemy(enemy);
-			enemy.initGraph();
-			this.delayCountDown = this.getDelay();
+			this.resetDelayCountDown();
 			this.units--;
 		}
+	}
+
+	private void resetDelayCountDown() {
+		this.delayCountDown = this.getDelay();
 	}
 
 	public int getUnits() {

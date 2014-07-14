@@ -1,31 +1,32 @@
 package ar.edu.unq.tpi.games.towerdefence.components;
 
-import java.awt.Color;
 import java.awt.geom.Point2D.Double;
 import java.util.ArrayList;
 import java.util.List;
 import ar.edu.unq.tpi.games.towerdefence.components.units.AbstractTower;
 import ar.edu.unq.tpi.games.towerdefence.scene.level.AbstractTowerDefenceLevel;
+import ar.edu.unq.tpi.games.towerdefence.util.TowerDefenceTerrainGenerator;
+
 import com.uqbar.vainilla.DeltaState;
 import com.uqbar.vainilla.Game;
 import com.uqbar.vainilla.GameComponent;
 import com.uqbar.vainilla.appearances.Appearance;
-import com.uqbar.vainilla.appearances.Rectangle;
 import com.uqbar.vainilla.events.constants.MouseButton;
-import com.uqbar.vainilla.utils.ResourceUtil;
 
 public class Scenary extends GameComponent<AbstractTowerDefenceLevel> {
 	
 	
 	private List<AbstractTower> towers = new ArrayList<AbstractTower>();
 	
-	public Scenary() {
+	@Override
+	public void onSceneActivated() {
+		super.onSceneActivated();
 		this.setAppearance(this.getDefaultAppearance());
-
 	}
 	
 	private Appearance getDefaultAppearance() {
-		return new Rectangle(Color.GREEN, ResourceUtil.getResourceInt("TowerDefence.scenary.width"), ResourceUtil.getResourceInt("TowerDefence.scenary.height") );
+		TowerDefenceTerrainGenerator terrainGenerator = new TowerDefenceTerrainGenerator(this.getScene().getMapParser(), this.getGame().getDisplayHeight(), this.getGame().getDisplayWidth());
+		return terrainGenerator.getSprite();
 	}
 
 	@Override
